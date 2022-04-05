@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+short f_move;
+char cross_or_zero, sign = 'X';
+int pos;
+string f_name, s_name;
+int pos_flag[9] = {'1', '2', '3', '4',
+                   '5', '6', '7', '8', '9'};
+char arr_board[3][3] = {{'1', '2', '3',},
+                        {'4', '5', '6',},
+                        {'7', '8', '9'}};
+void board()
+{
+    for (int y = 0; y < 3; y++)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            cout << arr_board[y][i] << " ";
+        }
+        cout << endl;
+    }
+}
+void convert_nums(int pos, char cross_zero) {
+    if (pos == 1) { arr_board[0][0] = cross_zero; }
+    if (pos == 2) { arr_board[0][1] = cross_zero; }
+    if (pos == 3) { arr_board[0][2] = cross_zero; }
+    if (pos == 4) { arr_board[1][0] = cross_zero; }
+    if (pos == 5) { arr_board[1][1] = cross_zero; }
+    if (pos == 6) { arr_board[1][2] = cross_zero; }
+    if (pos == 7) { arr_board[2][0] = cross_zero; }
+    if (pos == 8) { arr_board[2][1] = cross_zero; }
+    if (pos == 9) { arr_board[2][2] = cross_zero; }
+}
+void move()
+{
+    cout << "Input pos, sign" << endl;
+    cin >> pos;
+    cin >> cross_or_zero;
+    if (cross_or_zero == 'X' && sign == 'X' && pos_flag[pos] != '0') {
+        pos_flag[pos] = 'X';
+        convert_nums(pos, 'X');
+        board();
+        }
+    else if (cross_or_zero == '0' && sign == '0' && pos_flag[pos] != 'X') {
+        pos_flag[pos] = '0';
+        convert_nums(pos, '0');
+        board();}
+}
+int change_move()
+{
+    if (f_move == 1) {
+        cout << "Second player " << s_name << endl;
+        sign = 'X';
+        return f_move = 2; }
+    if (f_move == 2) {
+        cout << "First player " << f_name << endl;
+        sign = '0';
+    }
+    return f_move = 1;
+}
+int main()
+{
+    cout << "First name " << endl;
+    cin >> f_name;
+    cout << "Second name " << endl;
+    cin >> s_name;
+    srand(time(0));
+    f_move = 1 + rand() % 2;
+    if (f_move == 1) {
+        cout << "First player " << f_name << endl;
+    }
+    else if (f_move == 2) {
+        cout << "Second player " << s_name << endl;
+    }
+    board();
+    cout << "Input cross(X)" << endl;
+    while (true) {
+        board();
+        move();
+        for (int i = 0; i < 9; i++) {
+            if (pos_flag[i] == pos_flag[i + 1])
+                if (pos_flag[i] == pos_flag[i - 1]) {
+                    return 0;
+                }
+            if (pos_flag[i] == pos_flag[i + 3])
+                if (pos_flag[i] == pos_flag[i - 3]) {
+                    return 0;
+                }
+            if (pos_flag[i] == pos_flag[i + 4])
+                if (pos_flag[i] == pos_flag[i - 4]){
+                    return 0;
+                }
+            if (pos_flag[i] == pos_flag[i + 2])
+                if (pos_flag[i] == pos_flag[i - 2]) {
+                    return 0;
+                }
+        }
+        change_move();
+    }
+}
